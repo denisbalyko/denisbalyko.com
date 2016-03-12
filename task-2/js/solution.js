@@ -17,11 +17,14 @@
      * @returns {[number, number][]} маршрут к выходу представленный списоком пар координат
      */
     function solution(maze, x, y) {
-        // todo: построить правильный маршрут к выходу
-        return [
-            [1, 0],
-            [1, 1]
-        ];
+
+        var startNode = new Node(y, x, 0);
+        var Q = new Queue(startNode);
+        var endNode = findLastNode(maze);
+        var mazeMarked = performWaves(maze, Q);
+        var path = backTrace(mazeMarked, startNode, endNode).reverse();
+
+        return path;
     }
 
     /**

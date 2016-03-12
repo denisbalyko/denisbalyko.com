@@ -43,6 +43,21 @@
     }
 
     /**
+     * Функция возвращает последнюю клетку пути
+     *
+     * @param {number[][]} maze карта лабиринта представленная двумерной матрицей чисел
+     * @returns {Node} конечная клетка пути
+     */
+    function findLastNode(maze) {
+        for (var i = maze[0].length - 1; i >= 0; i--) {
+            if (maze[maze.length - 1][i] === EMPTY) {
+                return new Node(maze.length - 1, i);
+            }
+        }
+        throw "Ошибка: Отсутствие выхода.";
+    }
+
+    /**
      * Клетка на карте
      */
     function Node(x, y, v, p) {

@@ -25,6 +25,24 @@
     }
 
     /**
+     * Функция проверки не выходит ли точка с координатами за границы карты
+     *
+     * @param {number[][]} maze карта лабиринта представленная двумерной матрицей чисел
+     * @param {number} x координата точки по оси X
+     * @param {number} y координата точки по оси Y
+     * @returns {bool} возможно ли пройти?
+     */
+    function isValid(maze, x, y) {
+        if (x >= 0 && 
+            y >= 0 &&
+            x < maze.length &&
+            y < maze[0].length) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Клетка на карте
      */
     function Node(x, y, v, p) {

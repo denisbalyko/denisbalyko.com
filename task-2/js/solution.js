@@ -87,6 +87,26 @@
     }
 
     /**
+     * Функция обратного хода
+     *
+     * @param {number[][]} maze карта лабиринта с отмеченными волнами алгоритма Ли
+     * @param {Node} начальная клетка пути
+     * @param {Node} конечная клетка пути
+     * @returns {[number, number][]} маршрут к выходу представленный списоком пар координат
+     */
+    function backTrace(mazeMarked, startNode, endNode) {
+        var path = []
+        var currentNode = mazeMarked[endNode.x][endNode.y];
+
+        while (typeof currentNode === 'object' && currentNode.objectName === 'Node'){
+            path.push([currentNode.y, currentNode.x]);
+            currentNode = currentNode.parent;
+        }
+
+        return path;
+    }
+
+    /**
      * Клетка на карте
      */
     function Node(x, y, v, p) {

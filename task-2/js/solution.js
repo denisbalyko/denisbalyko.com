@@ -18,10 +18,11 @@
      */
     function solution(maze, x, y) {
 
-        var startNode = new Node(y, x, 0);
-        var endNode = findLastNode(maze);
-        var mazeMarked = performWaves(maze, startNode);
-        var path = backTrace(mazeMarked, startNode, endNode);
+        var startNode = new Node(y, x, 0),
+            endNode = findLastNode(maze),
+            mazeMarked = performWaves(maze, startNode),
+            path = backTrace(mazeMarked, startNode, endNode);
+
         root.maze.mazeMarked = mazeMarked;
 
         return path;
@@ -64,23 +65,26 @@
      * Функция распространения волн алгоритма Ли
      *
      * @param {number[][]} maze карта лабиринта представленная двумерной матрицей чисел
-     * @param {Queue} Исходная очередь
+     * @param {Node} Начальная точка
      * @returns {number[][]} maze карта лабиринта с отмеченными волнами алгоритма Ли
      */
     function performWaves(maze, startNode) {
 
-        var Q = new Queue(startNode);
-        var maze = copyMaze(maze);
+        var maze = copyMaze(maze), // Local scope
+            Q = new Queue(startNode);
+
         maze[startNode.x][startNode.y] = 1;
 
         while (!Q.isEmpty()){
-            var currentNode = Q.dequeue();
-            var xn = currentNode.x;
-            var yn = currentNode.y;
+            var currentNode, xn, yn, xk, yk, i;
 
-            for (var i = STEPS.length - 1; i >= 0; i--) {
-                var xk = xn + STEPS[i].dx;
-                var yk = yn + STEPS[i].dy;
+            currentNode = Q.dequeue(),
+            xn = currentNode.x,
+            yn = currentNode.y;
+
+            for (i = STEPS.length - 1; i >= 0; i--) {
+                xk = xn + STEPS[i].dx,
+                yk = yn + STEPS[i].dy;
                 if (isValid(maze, xk, yk) && maze[xk][yk] == EMPTY) {
                     nextNode = new Node(xk, yk, currentNode.value + 1, currentNode);
                     Q.enqueue(nextNode);
@@ -102,8 +106,8 @@
      * @returns {[number, number][]} маршрут к выходу представленный списоком пар координат
      */
     function backTrace(mazeMarked, startNode, endNode) {
-        var path = []
-        var currentNode = mazeMarked[endNode.x][endNode.y];
+        var path = [],
+            currentNode = mazeMarked[endNode.x][endNode.y];
             path.push([currentNode.y, currentNode.x]);
 
         while (typeof currentNode === 'object' && currentNode.objectName === 'Node'){
@@ -144,8 +148,8 @@
      */
     function Queue(Node){
 
-        var queue  = [Node];
-        var offset = 0;
+        var queue  = [Node],
+            offset = 0;
 
         // Размер очереди -> (int)
         this.getLength = function(){

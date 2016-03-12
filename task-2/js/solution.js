@@ -58,6 +58,35 @@
     }
 
     /**
+     * Функция распространения волн алгоритма Ли
+     *
+     * @param {number[][]} maze карта лабиринта представленная двумерной матрицей чисел
+     * @param {Queue} Исходная очередь
+     * @returns {number[][]} maze карта лабиринта с отмеченными волнами алгоритма Ли
+     */
+    function performWaves(maze, Q) {
+        var maze = maze;
+        while (!Q.isEmpty()){
+            var currentNode = Q.dequeue();
+            var xn = currentNode.x;
+            var yn = currentNode.y;
+
+            for (var i = STEPS.length - 1; i >= 0; i--) {
+                var xk = xn + STEPS[i].dx;
+                var yk = yn + STEPS[i].dy;
+                if (isValid(maze, xk, yk) && maze[xk][yk] == EMPTY) {
+                    nextNode = new Node(xk, yk, currentNode.value + 1, currentNode);
+                    Q.enqueue(nextNode);
+                    maze[xk][yk] = nextNode;
+                }
+            }
+
+        }
+
+        return maze;
+    }
+
+    /**
      * Клетка на карте
      */
     function Node(x, y, v, p) {

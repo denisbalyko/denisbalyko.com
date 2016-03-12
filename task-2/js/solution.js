@@ -3,6 +3,10 @@
     var WALL = root.maze.WALL;
     var PATH = root.maze.PATH;
     var CURRENT = root.maze.CURRENT;
+    var STEPS = [{'dx': 1, 'dy': 0}, 
+                 {'dx': 0, 'dy': 1}, 
+                 {'dx':-1, 'dy': 0}, 
+                 {'dx': 0, 'dy':-1}];
 
     /**
      * Функция находит путь к выходу и возвращает найденный маршрут
@@ -18,6 +22,54 @@
             [1, 0],
             [1, 1]
         ];
+    }
+
+    /**
+     * Клетка на карте
+     */
+    function Node(x, y, v, p) {
+        this.x = x;
+        this.y = y;
+        this.value = v;
+        this.parent = p;
+        this.objectName = 'Node';
+    }
+
+    /**
+     * Очередь
+     */
+    function Queue(Node){
+
+        var queue  = [Node];
+        var offset = 0;
+
+        // Размер очереди -> (int)
+        this.getLength = function(){
+            return (queue.length - offset);
+        }
+
+        // Пуста ли очередь? -> (bool)
+        this.isEmpty = function(){
+            return (queue.length == 0);
+        }
+
+        // Добавление в очередь нового item элемента:
+        // (item) -> ()
+        this.enqueue = function(item){
+            queue.push(item);
+        }
+
+        // Возвращаем элемент из очереди.
+        // () -> (item) | undefined
+        this.dequeue = function(){
+            if (queue.length == 0) return undefined;
+            var item = queue[offset];
+            if (++ offset * 2 >= queue.length){
+              queue  = queue.slice(offset);
+              offset = 0;
+            }
+            return item;
+        }
     }
 
     root.maze.solution = solution;

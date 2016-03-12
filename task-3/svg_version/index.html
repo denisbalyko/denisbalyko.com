@@ -8,8 +8,51 @@
 </head>
 <body>
     <div class="section">
+        <div class="filters">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+
+                    <filter id="invert">
+                        <feComponentTransfer>
+                            <feFuncR type="table" tableValues="1 0"/>
+                            <feFuncG type="table" tableValues="1 0"/>
+                            <feFuncB type="table" tableValues="1 0"/>
+                        </feComponentTransfer>
+                    </filter>
+
+                    <filter id="grayscale">
+                        <feColorMatrix values="0.2126 0.7152 0.0722 0 0
+                                               0.2126 0.7152 0.0722 0 0
+                                               0.2126 0.7152 0.0722 0 0
+                                               0      0      0      1 0"/>
+                    </filter>
+
+                    {# (0.2126 * r + 0.7152 * g + 0.0722 * b >= 128) ? 255 : 0; #}
+                    <filter id="threshold">
+                        <feComponentTransfer>
+                            <feFuncR type="discrete" tableValues="0 0.2126"/>
+                            <feFuncG type="discrete" tableValues="0 0.7152"/>
+                            <feFuncB type="discrete" tableValues="0 0.0722"/>
+                        </feComponentTransfer>
+                        <feComponentTransfer>
+                            <feFuncR type="discrete" tableValues="0 0"/>
+                            <feFuncG type="discrete" tableValues="1 0"/>
+                            <feFuncB type="discrete" tableValues="0 0"/>
+                        </feComponentTransfer>
+                        <feColorMatrix values="0 1 0 0 0
+                                               0 1 0 0 0
+                                               0 1 0 0 0
+                                               0 0 0 1 0"/>
+                        <fecomponenttransfer>
+                            <fefuncr type="table" tablevalues="1 0" />
+                            <fefuncg type="table" tablevalues="1 0" />
+                            <fefuncb type="table" tablevalues="1 0" />
+                        </fecomponenttransfer>
+                    </filter>
+                </defs>
+            </svg>
+        </div>
         <div class="camera">
-            <canvas class="camera__canvas"></canvas>
             <video autoplay class="camera__video"></video>
         </div>
         <div class="controls">

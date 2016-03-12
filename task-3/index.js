@@ -1,6 +1,42 @@
 (function () {
-    var video = document.querySelector('.camera__video'),
-        canvas = document.querySelector('.camera__canvas');
+
+    var video,
+        canvas,
+        ctx,
+        controlsFilter,
+        filterName;
+
+    var initVideoStream = function(){
+        video = document.querySelector('.camera__video'),
+        canvas = document.querySelector('.camera__canvas'),
+        ctx = canvas.getContext('2d'),
+        controlsFilter = document.querySelector('.controls__filter'),
+        filterName = controlsFilter.value;
+
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+    }
+
+    var filters = {
+        invert: function (r, g, b) {
+            return [255 - r, 255 - g, 255 - b];
+        },
+        grayscale: function (r, g, b) {
+            var v = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+            return [v, v, v];
+        },
+        threshold: function (r, g, b) {
+            var v = (0.2126 * r + 0.7152 * g + 0.0722 * b >= 128) ? 255 : 0;
+            return [v, v, v];
+        }
+    };
+
+    window.onload = initVideoStream();
+    window.onresize = initVideoStream();
+
+    controlsFilter.onchange = function(){
+        filterName = this.value;
+    }
 
     var getVideoStream = function (callback) {
         navigator.getUserMedia = navigator.getUserMedia ||
@@ -13,7 +49,8 @@
                     video.src = window.URL.createObjectURL(stream);
                     video.onloadedmetadata = function (e) {
                         video.play();
-
+                        canvas.width = video.videoWidth;
+                        canvas.height = video.videoHeight;
                         callback();
                     };
                 },
@@ -26,64 +63,30 @@
         }
     };
 
-    var applyFilterToPixel = function (pixel) {
-        var filters = {
-            invert: function (pixel) {
-                pixel[0] = 255 - pixel[0];
-                pixel[1] = 255 - pixel[1];
-                pixel[2] = 255 - pixel[2];
+    var applyFilter = function (pixels) {
 
-                return pixel;
-            },
-            grayscale: function (pixel) {
-                var r = pixel[0];
-                var g = pixel[1];
-                var b = pixel[2];
-                var v = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+        for (var i = 0; i < pixels.data.length - 1; i += 4){
+            var filtered = filters[filterName](
+                               pixels.data[i  ],
+                               pixels.data[i+1],
+                               pixels.data[i+2]
+                           );
 
-                pixel[0] = pixel[1] = pixel[2] = v;
-
-                return pixel;
-            },
-            threshold: function (pixel) {
-                var r = pixel[0];
-                var g = pixel[1];
-                var b = pixel[2];
-                var v = (0.2126 * r + 0.7152 * g + 0.0722 * b >= 128) ? 255 : 0;
-                pixel[0] = pixel[1] = pixel[2] = v;
-
-                return pixel;
-            }
-        };
-
-        var filterName = document.querySelector('.controls__filter').value;
-
-        return filters[filterName](pixel);
-    };
-
-    var applyFilter = function () {
-        for (var x = 0; x < canvas.width; x++) {
-            for (var y = 0; y < canvas.height; y++) {
-                var pixel = canvas.getContext('2d').getImageData(x, y, 1, 1);
-
-                pixel.data = applyFilterToPixel(pixel.data);
-
-                canvas.getContext('2d').putImageData(pixel, x, y);
-            }
+            pixels.data[i  ] = filtered[0];
+            pixels.data[i+1] = filtered[1];
+            pixels.data[i+2] = filtered[2];
         }
+
+        return pixels;
     };
 
     var captureFrame = function () {
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-
-        canvas.getContext('2d').drawImage(video, 0, 0);
-        applyFilter();
+        ctx.drawImage(video, 0, 0);
+        pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        ctx.putImageData(applyFilter(pixels), 0, 0);
     };
 
     getVideoStream(function () {
-        captureFrame();
-
-        setInterval(captureFrame, 16);
+        setInterval(captureFrame, 1);
     });
 })();

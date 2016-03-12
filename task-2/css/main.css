@@ -16,6 +16,7 @@ body {
 }
 
 .maze__cell {
+    position: relative;
     display: inline-block;
     width: 10px;
     height: 10px;
@@ -24,6 +25,19 @@ body {
     margin-bottom: 1px;
     border: 1px solid #eee;
 }
+
+    .maze__cell div{
+        position: absolute;
+        color: #333;
+        width: 10px;
+        height: 10px;
+        line-height: 10px;
+        text-align: center;
+        font-size: 6px;
+        font-family: Tahoma;
+        left: 0;
+        top: 0;
+    }
 
 .maze__cell_wall {
     background-color: #333;
@@ -35,4 +49,8 @@ body {
 
 .maze__cell_current {
     background-color: #f21000;
+}
+
+button{
+    margin: 10px;
 }

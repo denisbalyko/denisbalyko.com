@@ -5,4 +5,10 @@
     document.querySelector('.outer').appendChild(
         root.maze.render(map, path)
     );
+
+    document.querySelector('.animation.play').addEventListener("click", function (e) {
+    	this.remove();
+    	root.maze.animation(map, path);
+    });
+
 })(this);

@@ -19,10 +19,10 @@
     function solution(maze, x, y) {
 
         var startNode = new Node(y, x, 0);
-        var Q = new Queue(startNode);
         var endNode = findLastNode(maze);
-        var mazeMarked = performWaves(maze, Q);
-        var path = backTrace(mazeMarked, startNode, endNode).reverse();
+        var mazeMarked = performWaves(maze, startNode);
+        var path = backTrace(mazeMarked, startNode, endNode);
+        root.maze.mazeMarked = mazeMarked;
 
         return path;
     }
@@ -67,8 +67,12 @@
      * @param {Queue} Исходная очередь
      * @returns {number[][]} maze карта лабиринта с отмеченными волнами алгоритма Ли
      */
-    function performWaves(maze, Q) {
-        var maze = maze;
+    function performWaves(maze, startNode) {
+
+        var Q = new Queue(startNode);
+        var maze = copyMaze(maze);
+        maze[startNode.x][startNode.y] = 1;
+
         while (!Q.isEmpty()){
             var currentNode = Q.dequeue();
             var xn = currentNode.x;
@@ -100,6 +104,7 @@
     function backTrace(mazeMarked, startNode, endNode) {
         var path = []
         var currentNode = mazeMarked[endNode.x][endNode.y];
+            path.push([currentNode.y, currentNode.x]);
 
         while (typeof currentNode === 'object' && currentNode.objectName === 'Node'){
             path.push([currentNode.y, currentNode.x]);
@@ -107,6 +112,20 @@
         }
 
         return path;
+    }
+
+    /**
+     * Функция копирования лабиринта
+     *
+     * @param {number[][]} maze карта лабиринта представленная двумерной матрицей чисел
+     * @returns {number[][]} clonedMaze скопированная карта либиринта
+     */
+    function copyMaze(maze) {
+        var copiedMaze = [];
+        maze.forEach(function (arr) {
+            copiedMaze.push(arr.concat());
+        });
+        return copiedMaze;
     }
 
     /**

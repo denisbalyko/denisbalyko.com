@@ -30,6 +30,28 @@ body {
     transform: translateY(-50%);
 }
 
+.camera__canvas_invert{
+    filter: invert(100%);
+    -webkit-filter: invert(100%);
+    -moz-filter: invert(100%);
+    -ms-filter: invert(100%);
+    -o-filter: invert(100%);
+    -webkit-filter: invert(1);
+}
+
+.camera__canvas_grayscale{
+    filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    -webkit-filter: grayscale(1);
+}
+
+.camera__canvas_threshold{
+    //  :( , но вероятно он есть или его можно собрать, что и будет сделано в /svg_version/
+}
+
 .controls {
     position: fixed;
     top: 0;

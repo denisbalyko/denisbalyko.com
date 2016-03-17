@@ -1,0 +1,35 @@
+
+@media screen and (max-width: 960px){
+    html,
+    body{
+        font-size: 18px;
+    }
+    .wrapper{
+        width: 85%;
+    }
+    .layer{
+        margin: 0 2em;
+    }
+    .scale{
+        margin: 0 -2em;
+    }
+    .layer__body_responsive{
+        width: 80%;
+    }
+    .layer__body_bottomed{
+    	padding-bottom: 2em;
+	}
+    .scale__item_y{
+    	font-size: 0.8em;
+    }
+    .scale__item_y:nth-child(2n+1){
+		color: transparent;
+    }
+	.portfolio__title,
+	.portfolio__text{
+	    width: 85%;
+	}
+    ._tablet_none{
+    	display: none;
+    }
+}

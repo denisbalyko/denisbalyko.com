@@ -1,0 +1,39 @@
+
+@media screen and (max-width: 768px){
+    html,
+    body{
+        font-size: 16px;
+    }
+    .wrapper{
+        width: 95%;
+    }
+    .layer{
+        margin: 0 1em;
+    }
+    .scale{
+        margin: 0 -1em;
+    }
+    .layer__body_responsive{
+        width: 100%;
+    }
+    .layer__body_bottomed{
+    	padding-bottom: 3em;
+	}
+    .scale__item_y{
+    	font-size: 0.8em;
+    }
+    .scale__item.scale__item_y:nth-child(2n+1){
+		color: transparent;
+    }
+	.portfolio__title,
+	.portfolio__text{
+	    width: 95%;
+	}
+    footer .footer__link{
+    	margin: 0 .5em;
+    	font-size: .6em;
+    }
+    ._mobile_none{
+    	display: none;
+    }
+}

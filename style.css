@@ -656,7 +656,7 @@ img{
 }
 
 .scale .scale__item_current:after{
-    width: 35%;
+    width: 50%;
 }
 
 
@@ -722,7 +722,10 @@ img{
 }
 
 .timeline .timeline__item.timeline__item_requiredwork{
-    width: 17.5%;
+}
+
+.timeline .timeline__item.timeline__item_tmean{
+    width: 37.5%;
 }
 
 .timeline .timeline__item.timeline__item_none{

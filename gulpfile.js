@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var plumber = require('gulp-plumber');
 var htmlmin = require('gulp-htmlmin');
 var concat = require('gulp-concat');
+var cleanCSS = require('gulp-clean-css');
 var uncss = require('gulp-uncss');
 var nano = require('gulp-cssnano');
 var imageop = require('gulp-image-optimization');
@@ -28,6 +29,7 @@ gulp.task('cssconcat', function () {
 gulp.task('cssminify', function () {
     gulp.src('style.css')
         .pipe(plumber())
+        .pipe(cleanCSS())
         .pipe(uncss({
             html: ['index.html']
         }))
@@ -45,4 +47,22 @@ gulp.task('imgopt', function () {
         .pipe(gulp.dest('production'));
 });
 
-gulp.task('default', ['cssconcat', 'cssminify', 'htmlminify', 'imgopt']);
+gulp.task('css', ['cssconcat', 'cssminify']);
+gulp.task('html', ['htmlminify']);
+gulp.task('img', ['imgopt']);
+
+
+gulp.task('default', function () {
+    gulp.watch('css/*.css', function () {
+        gulp.run('css');
+    });
+
+    gulp.watch('*.html', function () {
+        gulp.run('html');
+    });
+
+    gulp.watch('*.png', function () {
+        gulp.run('*.png', ['img']);
+    });
+
+});

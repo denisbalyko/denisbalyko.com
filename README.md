@@ -1,1 +1,1 @@
-# yandex-shri-minsk-2016
+About myself
